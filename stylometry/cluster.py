@@ -85,15 +85,15 @@ class StyloPCA(StyloClassifier):
 			evr = self.pca.explained_variance_
 		else:
 			evr = self.pca.lambdas_
-		print evr
+		print(evr)
 		fig = plt.figure()
 		ax = fig.add_subplot(111)
 		tot = sum(evr)
 		var_exp = [(i / tot)*100 for i in sorted(evr, reverse=True)]
 		cum_var_exp = np.cumsum(var_exp)
-		plt.plot(range(1,len(cum_var_exp)+1),cum_var_exp, 'b*-')
+		plt.plot(list(range(1,len(cum_var_exp)+1)),cum_var_exp, 'b*-')
 		width = .8
-		plt.bar(range(1,len(var_exp)+1), var_exp, width=width)
+		plt.bar(list(range(1,len(var_exp)+1)), var_exp, width=width)
 		# ax.set_xticklabels()
 		plt.grid(True)
 		ax.set_ylim((0,110))

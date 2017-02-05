@@ -1,4 +1,4 @@
-from __future__ import division
+
 import pandas as pd
 import numpy as np
 import scipy as sp
@@ -14,8 +14,8 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import mean_squared_error
 from IPython.display import Image
-import StringIO, pydot
-from extract import StyloCorpus
+import io, pydot
+from .extract import StyloCorpus
 from pkgutil import get_data
 import random
 import os
@@ -28,7 +28,7 @@ class StyloClassifier(object):
 		if isinstance(corpus,str):
 			csv_file = corpus
 		elif isinstance(corpus,StyloCorpus):
-			csv_file = StringIO.StringIO(self.corpus.output_csv())
+			csv_file = io.StringIO(self.corpus.output_csv())
 		else:
 			raise ValueError('Must input either corpus or csv_path.')
 		self.data_frame = pd.read_csv(csv_file)
@@ -86,7 +86,7 @@ class StyloDecisionTree(StyloClassifier):
 			if isinstance(corpus,str):
 				csv_file = corpus
 			elif isinstance(corpus,StyloCorpus):
-				csv_file = StringIO.StringIO(self.corpus.output_csv())
+				csv_file = io.StringIO(self.corpus.output_csv())
 			else:
 				raise ValueError('Must input either corpus or csv_path.')
 			test_frame = pd.read_csv(csv_file)
@@ -100,7 +100,7 @@ class StyloDecisionTree(StyloClassifier):
 		return (confusion_matrix(self.yt, self.ypred), accuracy_score(self.yt, self.ypred))
 
 	def output_image(self,path):
-		dot_data = StringIO.StringIO()
+		dot_data = io.StringIO()
 		export_graphviz(self.classifier, feature_names=self.cols, out_file=dot_data)
 		graph = pydot.graph_from_dot_data(dot_data.getvalue())
 		graph.write_png(path)
